@@ -10,7 +10,7 @@ from apps.auth.dependencias.autenticacion import autenticar_usuario
 router = APIRouter(
     prefix='/dispositivos',
     tags=['dispositivos'],
-    dependencies=[Depends(autenticar_usuario)]
+    # dependencies=[Depends(autenticar_usuario)]
 )
 
 
@@ -41,7 +41,7 @@ def obtener_dispositivo(
     if dispositivo_db is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='No se encontro el dispositivo solicitado'
+            detail='Dispositivo no encontrado'
         )
     
     return dispositivo_db
@@ -80,7 +80,7 @@ def editar_dispositivo(
     if dispositivo_db is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail='No se encontro el dispositivo solicitado'
+            detail='Dispositivo no encontrado'
         )
     
     dispositivo_db.ns = dispositivo.ns or dispositivo_db.ns

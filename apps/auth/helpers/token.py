@@ -21,7 +21,6 @@ def decodificar_token(token:str):
 
         return payload
     except JWTError:
-        print('HUBO PEDo en decodificar token')
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='Credenciales invalidas'

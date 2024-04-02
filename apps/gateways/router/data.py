@@ -39,7 +39,6 @@ def crear_data(
     sesion:Annotated[Session, Depends(obtener_sesion)],
     data:Annotated[list[DataCrear], Body()]
 ):
-    print(data)
     for dataVaca in data:
         dispositivo_db = sesion.exec(
             select(Dispositivo).where(Dispositivo.ns == dataVaca.ns)

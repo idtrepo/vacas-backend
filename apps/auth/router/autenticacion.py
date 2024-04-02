@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, status, Body, Depends, HTTPException
 from sqlmodel import Session
 from config.db import obtener_sesion
-from apps.usuarios.schemas.usuarios import UsuarioLeer
+from apps.usuarios.schemas.usuarios import UsuarioVacaLeer
 from apps.auth.schemas.autenticacion import UsuarioLogin, Token, TokenAccess, TokenActualizar
 from apps.auth.helpers.autenticar import autenticar_usuario, obtener_usuario
 from apps.auth.helpers.token import crear_token, decodificar_token
@@ -37,7 +37,7 @@ def iniciar_sesion(
             detail='Las credenciales proveidas no son correctas'
         )
 
-    usuario = UsuarioLeer(**usuario_db.model_dump())
+    usuario = UsuarioVacaLeer(**usuario_db.model_dump())
     data_usuario = {'usuario': usuario.model_dump()}
     token_access = crear_token(data_usuario, timedelta(minutes=EXPIRACION_TOKEN_ACCESS))
     token_refresh = crear_token(data_usuario, timedelta(hours=EXPIRACION_TOKEN_REFRESH))
@@ -65,7 +65,7 @@ def actualizar_sesion(
     if not usuario_db:
         raise HTTPException(status_code=401, detail="Could not validate credentials")
     
-    usuario = UsuarioLeer(**usuario_db.model_dump())
+    usuario = UsuarioVacaLeer(**usuario_db.model_dump())
     data_usuario = {'usuario': usuario.model_dump()}
     token_access = crear_token(data_usuario, timedelta(minutes=EXPIRACION_TOKEN_ACCESS))
 

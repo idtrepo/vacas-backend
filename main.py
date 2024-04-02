@@ -1,6 +1,5 @@
-from typing import Annotated
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, Request
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from config.db import crear_db
 from apps.usuarios.router import usuarios
@@ -26,13 +25,14 @@ async def lifespan(app:FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 
-@app.middleware('http')
-async def verificar_request(request:Request, call_next):
-    print('hola desde el middleware')
-    print(request.headers)
-    print(request.method)
-    response = await call_next(request)
-    return response
+# @app.middleware('http')
+# async def pruebas(request:Request, call_next):
+#     print(request.method)
+#     print(request.url)
+#     body = await request.json()
+#     print(body)
+#     response = await call_next(request)
+#     return response
 
 
 app.add_middleware(

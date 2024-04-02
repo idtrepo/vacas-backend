@@ -1,17 +1,1 @@
-from pydantic import BaseModel
-
-
-class DispositivoBase(BaseModel):
-    ns:int
-
-
-class DispositivoLeer(DispositivoBase):
-    id:int
-
-
-class DispositivoCrear(DispositivoBase):
-    pass
-
-
-class DispositivoEditar(DispositivoBase):
-    ns:int|None = None
+from apps.base.schemas.vacas_usuarios_dispositivos import DispositivoLeer, DispositivoCrear, DispositivoEditar

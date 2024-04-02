@@ -7,8 +7,6 @@ from apps.data.models import data
 
 
 db_conexion = obtener_db_conexion()
-print('CONEXION DE LA BASE DE DATOS')
-print(db_conexion)
 engine = create_engine(db_conexion)
 
 

@@ -11,7 +11,7 @@ from apps.auth.dependencias.autenticacion import autenticar_usuario
 router = APIRouter(
     prefix='/data',
     tags=['data'],
-    dependencies=[Depends(autenticar_usuario)]
+    # dependencies=[Depends(autenticar_usuario)]
 )
 
 
@@ -39,7 +39,10 @@ def crear_data(
     sesion:Annotated[Session, Depends(obtener_sesion)],
     data:Annotated[list[DataCrear], Body()]
 ):
+    print('-' * 50)
+    print('DATOS RECIBIDOS DE LA VACA')
     print(data)
+    print('-' * 50)
     for dataVaca in data:
         dispositivo_db = sesion.exec(
             select(Dispositivo).where(Dispositivo.ns == dataVaca.ns)

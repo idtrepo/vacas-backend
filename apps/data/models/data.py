@@ -1,7 +1,8 @@
 from typing import TYPE_CHECKING, Optional
 from decimal import Decimal
 from datetime import datetime, date, time
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import Field, Relationship
+from apps.base.models.base import Base
 
 
 if TYPE_CHECKING:
@@ -9,16 +10,17 @@ if TYPE_CHECKING:
 
 
 
-class Data(SQLModel, table=True):
+class Data(Base, table=True):
     id:int|None = Field(default=None, primary_key=True)
     ns:int
-    fecha:date|None
-    hora:time|None
-    lat:str|None
-    lon:str|None
+    fecha:date|None = None
+    hora:time|None = None
+    lat:Decimal = Field(default=0, max_digits=9, decimal_places=6)
+    lon:Decimal = Field(default=0, max_digits=9, decimal_places=6)
     pasos:int
     tempA:Decimal = Field(default=0, max_digits=5, decimal_places=2)
     tempO:Decimal = Field(default=0, max_digits=5, decimal_places=2)
+    bat:Decimal = Field(default=0, max_digits=5, decimal_places=2)
     rssi:int
     snr:int
 
