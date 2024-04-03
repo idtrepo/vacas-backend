@@ -1,20 +1,19 @@
-from dotenv import load_dotenv, dotenv_values
+
 import os
 
 
-load_dotenv()
-env_dir = dotenv_values('.env')
+
 
 print('VARIABLES DE ENTORNO')
-print(env_dir)
+print(os.environ)
 
-DB_USER = env_dir.get('DB_USER')
-DB_PASS = env_dir.get('DB_PASS')
-DB_HOST = env_dir.get('DB_HOST')
-DB_PORT = env_dir.get('DB_PORT')
-DB_NAME = env_dir.get('DB_NAME')
-DB_DRIVER = env_dir.get('DB_DRIVER')
-SECRET_KEY = env_dir.get('SECRET_KEY')
+DB_USER = os.environ.get('DB_USER')
+DB_PASS = os.environ.get('DB_PASS')
+DB_HOST = os.environ.get('DB_HOST')
+DB_PORT = os.environ.get('DB_PORT')
+DB_NAME = os.environ.get('DB_NAME')
+DB_DRIVER = os.environ.get('DB_DRIVER')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 def obtener_db_conexion():
