@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, status, Path, Body, Depends, HTTPException
+from fastapi import APIRouter, status, Path, Body, Depends, HTTPException, Query
 from sqlmodel import SQLModel, Session, select
 from config.db import obtener_sesion
 from apps.base.helpers.respuestas import generar_respuesta, generar_respuesta_error, Metodos
@@ -33,6 +33,26 @@ def obtener_vacas(
 
 
 @router.get(
+    '/ubicacion',
+    status_code=status.HTTP_200_OK,
+    # response_model=list
+)
+def obtener_ubicacion_vacas(
+    sesion:Annotated[Session, Depends(obtener_sesion)],
+    usuario:Annotated[int, Query(gt=0)]
+):
+    query_vaca = select(Vaca).where(Vaca.usuario_id == usuario)
+    vacas_db = sesion.exec(query_vaca).all()
+    datos_vacas = []
+
+    if len(vacas_db) > 0:
+        mapear_data = lambda vaca:{'id': vaca.id, 'nombre': vaca.nombre, 'datos': vaca.dispositivo.datos[-1]}
+        datos_vacas = [mapear_data(vaca) for vaca in vacas_db]
+
+    return datos_vacas
+
+
+@router.get(
     '/{id}',
     status_code=status.HTTP_200_OK,
     response_model=VacaLeer
@@ -47,7 +67,7 @@ def obtener_vaca(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Perfil de vaca no encontrado')
 
     return vaca_db
-
+ 
 
 @router.get(
     '/{id}/ubicacion',
@@ -87,9 +107,6 @@ def crear_vaca(
     sesion:Annotated[Session, Depends(obtener_sesion)],
     vaca:Annotated[VacaCrear, Body()]
 ):
-    print('INFO DE LA VACA A CREAR')
-    print(vaca.model_dump())
-    print('*' * 50)
     usuario_db = sesion.get(Usuario, vaca.usuario)
     dispositivo_db = sesion.get(Dispositivo, vaca.dispositivo)
     nueva_vaca = Vaca(
@@ -98,7 +115,6 @@ def crear_vaca(
         meses=vaca.meses,
         nombre=vaca.nombre,
     )
-    print('ACA TDBN 1')
     nueva_vaca.usuario = usuario_db
     nueva_vaca.dispositivo = dispositivo_db
 
